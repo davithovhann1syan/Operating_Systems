@@ -5,7 +5,7 @@
 
 int main()
 {
-    int pid = fork();
+	int pid = fork();
 
 	if(pid < 0)
 	{
@@ -15,13 +15,11 @@ int main()
 
 	else if (pid == 0)
 	{
-		printf("Child Process: PID = %d\n", getpid());
+		printf("Child PID = %d\n", getpid());
 	}
 	
-    else 
-    {
-        printf("Parent Process: PID = %d\n", getpid());
-    }
+    	else 
+    	        printf("Parent PID = %d\n", getpid());
 
-    return 0;
+	return 0;
 }
