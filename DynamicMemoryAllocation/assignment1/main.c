@@ -30,13 +30,12 @@ int main() {
     int array_sum = 0;
 
     for(int i = 0; i < n; i++)
-    {
+   
        array_sum = array_sum + arr[i];
     }
 
     printf("\nSum of elements of an array: %d\n", array_sum);
     
     free(arr);
-
     return 0;
 }
