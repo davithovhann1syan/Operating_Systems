@@ -1,0 +1,86 @@
+IMPORTANT
+In your home directory crate a directory named lab1.
+
+-----------------------------------|
+Part 1: Process Creation, Pointers |
+-----------------------------------|
+Step 1: Fork and Exec
+Task: Write a C program where:
+
+	The parent process:
+	 - Declares a character array (e.g., char str[] = "Hello";).
+	 - Creates a pointer to char that points to the second element of the array.
+	 - Prints pointer’s address, pointers value(address of the char) and the value stored at the address pointed by the pointer.
+	 - Creates a child process.
+	 - Waits for the child process to complete using wait() and checks the exit status.
+
+	The child process:
+	 - Executes a separate program written in Step 2.
+
+	Specific Requirements:	
+	 Parent prints the following before forking:
+	 - The pointer's address: "Pointer's address: X."
+	 - The value stored in the pointer: "Pointer value: Y."
+	 - The value of a char using pointer dereferencing: "Char value: Z."
+	 - After forking, parent waits for the child to finish and prints: "Parent PID: X, waiting for child."
+	 - Child prints: "Executing child program."
+	 - In the parent process you should handle potential errors of fork and exec calls.
+
+Step 2: Child Process - Array Management Program
+	Task: Write a separate C program (child.c) that:
+	 - Creates an array of 100 integers.
+	 - Fills the array with values from 0 to 99 using array name as a pointer.
+	 - Defines a function triple(int *arr, int size) which receives array pointer and array size as arguments and triples the value of each element. Pay attention that the function should modify the actual array.
+	 - Calls triple() function. 
+	 - Prints the first 5 and last 5 elements of the array using array name as a pointer. The values should be updated (x3).
+	
+	Parent Process After Child Execution:
+	 - After the child completes execution, the parent process should modify the value pointed to by the original pointer and print the updated value.
+	
+
+
+-----------------------------------------------|
+Part 2: Compilation Stages and Binary Analysis |
+-----------------------------------------------|
+Step 1: Prepare report.txt file where you should put the required comments for the each stage.
+Step 2: Compilation Stages and Symbol Inspection with nm
+	Task: Compile the child array management program and inspect the symbol tables using nm.
+
+	Stage 1: Preprocess the code using gcc. You should get child.i file at the output of this stage.
+	Action: Open the preprocessed file and briefly observe the code. In report.txt file explain what is the output of preporcessing stage.
+
+	Stage 2: Compile the program to an object file using gcc.
+	Action: Use nm to analyze the object file.
+	Investigation: Identify and explain key symbols like main, triple and external functions like printf, which should be undefined at this stage.
+	Key Task: List which symbols are defined and which are undefined. Include the results of investigation and a short explanation in report.txt file.
+	
+	Stage 3: Link the object file to create an executable.
+	Action: Use nm to inspect the final executable.
+	Investigation: Compare the symbols in the object file with those in the executable.
+	Identify previously undefined symbols (e.g., printf) that are now resolved.
+
+	Deliverable: In the report, you should:
+	Include outputs from nm on both the object file and the final executable.
+	Provide a comparison of the symbol tables, particularly highlighting how undefined symbols in the object file are resolved in the executable.
+	Summarize the role of linking in resolving external symbols, with a focus on how symbols evolve through the compilation process.
+
+	Specific Requirements:
+	 - You must use the appropriate commands to preprocess, compile, and link the program.
+	 - Compare the results of nm on the object file and the executable.
+	 - Write a brief explanation of how symbols transition from being undefined in the object file to resolved in the final executable.
+
+Step 3: Analyze the ELF Header with readelf
+	Task: Use readelf to inspect the ELF header of your compiled executable.
+	Action: Run the appropriate readelf command to display the ELF header information.
+	Deliverable:
+	Copy the relevant ELF header data into report.txt.
+	Key Task: Identify and note the entry point address of your program. This address indicates where execution begins in your compiled binary.
+
+Step 4: Trace Function Calls with objdump
+	Task: Utilize objdump to trace how the main function is invoked and followed throughout the program execution.
+	Action: Run the necessary objdump command to generate the disassembly of your executable.
+	Deliverable:
+	In report.txt, include an explanation of how the entry point is utilized during program execution.
+	List the addresses and corresponding function names for all functions that are called, starting from the entry point up to and including main.
+	Key Task: Depict the chain of function calls with their addresses in a clear format, showing how control flows from the entry point to main.
+
