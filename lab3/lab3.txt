@@ -1,0 +1,102 @@
+Assignment 1: Fixed-Length File Processing
+Objective:
+Write a C program that processes a file (file1.txt) with fixed-length lines (10 characters each). The program will read the content line by line, reverse each line, and write the reversed lines into another file (file2.txt).
+________________________________________
+Requirements:
+1.	File Format:
+	* Each line in file1.txt is exactly 10 characters.
+	* If a line is shorter, it is padded with spaces to reach 10 characters.
+2.	Operations to Use:
+	* creat, open, close, read, write
+3.	Steps:
+	1. Create and write a file (file1.txt) with user input.
+	2. Ensure each line is padded to 10 characters.
+	3. Open file1.txt and read it line by line (10 bytes at a time).
+	4. Reverse each 10-character line.
+	5. Write the reversed lines to another file (file2.txt).
+________________________________________
+Example
+Input (file1.txt):
+Hello     
+World     
+Programming
+
+Output (file2.txt):
+olleH
+dlroW
+gnimmargorP
+
+===================================================================================================================================
+
+Assignment 2: Synchronizing Parallel Histogram Updates
+Objective
+
+Write a C program to demonstrate a critical section problem where multiple threads build a shared histogram (array of 10 counters). 
+Then synchronize the threads using:
+ - POSIX spin locks
+ - POSIX mutexes
+ - POSIX semaphores
+
+Problem Description
+You will compute a histogram of digits from 0 to 9.
+ - The program creates an integer array data[] of size N=1000000.
+ - It fills data[i] = i % 10; so the distribution is perfectly uniform and the expected histogram is known.
+ - Several threads process different parts of data[] in parallel and update a shared global hist[10] array.
+
+Without synchronization, updates to hist[] cause race conditions and wrong counts.
+
+Then you will fix it using:
+ - spin lock,
+ - mutex,
+ - semaphore (binary).
+
+Requirements
+
+Global data
+
+#define N 1000000
+#define NUM_THREADS 4
+int data[N];
+int hist[10] = {0};
+data[] holds digits 0–9.
+
+hist[d] counts how many times digit d appears.
+
+Initialization
+
+In main:
+
+for (int i = 0; i < N; i++) {
+    data[i] = i % 10;
+}
+
+
+Expected histogram (since N is divisible by 10):
+
+hist[0] = hist[1] = ... = hist[9] = N / 10;
+
+
+Thread work
+
+Split the array into NUM_THREADS segments.
+
+Each thread gets start and end indexes.
+
+For each i in its segment:
+
+int d = data[i];          // between 0 and 9
+hist[d]++;                // CRITICAL SECTION
+
+
+Output:
+After all threads have finished, print the histogram and compare against the expected value:
+
+Mode 0 (no sync):
+hist[0] = 99872   (expected 100000)
+hist[1] = 100031
+...
+
+Mode 2 (synced with ...):
+hist[0] = 100000  (expected 100000)
+...
+hist[9] = 100000  (expected 100000)
